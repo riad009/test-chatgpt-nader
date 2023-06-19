@@ -6,7 +6,7 @@ import axios from 'axios';
 
 function App() {
 
- 
+ // get api key from server
   const [apiKey, setApiKey] = useState('');
 
   useEffect(() => {
@@ -120,7 +120,7 @@ function App() {
           <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
           <option value="gpt-3.5-turbo-0613">gpt-3.5-turbo-0613</option>
           <option value="gpt-3.5-turbo-16k-0613">gpt-3.5-turbo-16k-0613</option>
-          <option value="text-davinci-003">text-davinci-003</option>
+          {/* <option value="text-davinci-003">text-davinci-003</option> */}
         </select>
       </label>
     </div>
