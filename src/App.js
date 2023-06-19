@@ -1,20 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-//This is for development testing purposes only.
-//Please do not reuse any information after your development
-
-
-const API_KEY = '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';
-
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${API_KEY}`,
-};
 
 function App() {
+
+ 
+  const [apiKey, setApiKey] = useState('');
+
+  useEffect(() => {
+    fetch('https://server-khaki-kappa.vercel.app/api/key')
+      .then(response => response.json())
+      .then(data => setApiKey(data.apiKey))
+      .catch(error => console.error(error));
+  }, []);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${apiKey}`,
+  };
 
   const [userInput, setUserInput] = useState({
     system: '',
