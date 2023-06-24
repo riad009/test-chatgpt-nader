@@ -1,7 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ReactHtmlParser from 'html-react-parser';
+//  react html parser will convert html string reponse from gpt and convert it into JSX code and then we will render that to our component.
 
 function App() {
   const [apiKey, setApiKey] = useState('');
@@ -52,28 +53,6 @@ console.log('user input', userInput.prompt)
   const [assistantResponse, setAssistantResponse] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-const defaultSystemContent = `you are an intelligent system to assist the user in rewriting a job description in human-like text.
-System, Take on the persona of ${userInput.persona} to attract potential candidates.
-System you must use a ${userInput.style.toLowerCase()} tonality and engage the reader.
-System, you have to be ${userInput.style.toLowerCase()} the reader with what's in it for them using five or more points and these should engage the reader.
-System, also refine the responsibilities and requirements and describe them using proper points with explanation. you can use upto 2000 words.
-System, use your own creativity to yield even better results then following these instructions.
-System, if a job description is not given, ask for it.`
-    setUserInput(prevState => ({
-      ...prevState,
-      system: defaultSystemContent
-    }));
-  }, [userInput.persona, userInput.style]);
-
-  useEffect(() => {
-const defaultUserContent = ''
-          setUserInput(prevState => ({
-            ...prevState,
-            prompt: defaultUserContent,
-          }));
-  }, [userInput.persona, userInput.style]);
-
   const handleUserInput = (e) => {
     setUserInput(prevState => ({
       ...prevState,
@@ -86,10 +65,23 @@ const defaultUserContent = ''
 
     const data = {
       model: userInput.model,
+      // remember you have to instruct gpt to generate desired styling and html response. try giving instructions in system or assistant roles.
       messages: [
         {
           role: 'system',
-          content: userInput.system
+          content: 'Assist the user in rewriting a job description in human-like text. give the response in HTML with proper styling.',
+        },
+        {
+          role: 'user',
+          content: `Present the content in a job description format.
+          Use bolds, headings and exclamation marks when suitable and turn the job description into a marketing campaign.
+          Take on the persona of ${userInput.persona} to attract potential candidates.give the response in HTML with proper styling.`,
+        },
+        {
+          role: 'assistant',
+          content: `The goal is to rewrite a job description, putting emphasis on what's in it for them.
+          Begin with a quick introduction and immediately follow by describing the benefits.
+          Use a ${userInput.style.toLowerCase()} tonality when rewriting the job description. give the response in HTML with proper styling.`,
         },
         {
           role: 'user',
@@ -115,17 +107,13 @@ const defaultUserContent = ''
     }
   };
 
+  //  updated this functions. now we are using a function from reactHtmlParser package and givin it our content to convert it into jsx.
   const formatAssistantResponse = (response) => {
-    const paragraphs = response.split('\n\n');
-
-    const formattedResponse = paragraphs.map((paragraph, index) => (
-      <p key={index} className="text-left mb-4">
-        {paragraph}
-      </p>
-    ));
-
+    const formattedResponse = ReactHtmlParser(response);
     return formattedResponse;
   };
+  
+
 
   return (
     <div className="container mx-auto py-8">
@@ -137,9 +125,8 @@ const defaultUserContent = ''
         </>
       ) : (
         <>
-          <div className="bg-gray-100 p-4 mb-4">
+        {/*  we are rendering the parsed content in here. */}
             {formatAssistantResponse(assistantResponse)}
-          </div>
         </>
       )}
 
