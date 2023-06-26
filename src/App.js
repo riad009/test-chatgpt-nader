@@ -5,20 +5,20 @@ import ReactHtmlParser from 'html-react-parser';
 //  react html parser will convert html string reponse from gpt and convert it into JSX code and then we will render that to our component.
 
 function App() {
-  // const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState('');
 
-  // useEffect(() => {
-  //   fetch('https://server-khaki-kappa.vercel.app/api/key')
-  //     .then(response => response.json())
-  //     .then(data => setApiKey(data.apiKey))
-  //     .catch(error => console.error(error));
-  // }, []);
+  useEffect(() => {
+    fetch('https://server-khaki-kappa.vercel.app/api/key')
+      .then(response => response.json())
+      .then(data => setApiKey(data.apiKey))
+      .catch(error => console.error(error));
+  }, []);
 
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: 'Bearer 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',
+    Authorization: `Bearer ${apiKey}`,
   };
-
+// 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
   const personas = [
     'Lou Adler',
     'Stacy Donovan Zapa',
