@@ -5,20 +5,21 @@ import ReactHtmlParser from 'html-react-parser';
 //  react html parser will convert html string reponse from gpt and convert it into JSX code and then we will render that to our component.
 
 function App() {
-  const [apiKey, setApiKey] = useState('');
+  // const [apiKey, setApiKey] = useState('');
 
-  useEffect(() => {
-    fetch('https://server-khaki-kappa.vercel.app/api/key')
-      .then(response => response.json())
-      .then(data => setApiKey(data.apiKey))
-      .catch(error => console.error(error));
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://server-khaki-kappa.vercel.app/api/key')
+  //     .then(response => response.json())
+  //     .then(data => setApiKey(data.apiKey))
+  //     .catch(error => console.error(error));
+  // }, []);
 
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${apiKey}`,
+    
+    Authorization: 'Bearer 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',
   };
-// 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
+  // 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
   const personas = [
     'Lou Adler',
     'Stacy Donovan Zapa',
@@ -76,14 +77,16 @@ console.log('user input', userInput.prompt)
           content: `Present the content in a job description format.
           Use bolds, headings and exclamation marks when suitable and turn the job description into a marketing campaign.
           Take on the persona of ${userInput.persona} to attract potential candidates. 
-          give the response in HTML with professional styling.`,
+          give the response in HTML with professional styling.
+          do not generate any other color than black. always keep generate content left aligned.`,
         },
         {
           role: 'assistant',
           content: `The goal is to rewrite a job description, putting emphasis on what's in it for them.
           Begin with a quick introduction and immediately follow by describing the benefits.
           Use a ${userInput.style.toLowerCase()} tonality when rewriting the job description. 
-          Only generate content in black color, make content left aligned, do not generate any a tag and do not generate any links or any other color than black and no buttons.
+          Only generate content in black color, make content left aligned, do not generate any a tag and do not generate any links. 
+          do not generate any other color than black and no buttons.
           create bullets of headings. only use bold text for headings`,
         },
         {
